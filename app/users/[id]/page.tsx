@@ -1,9 +1,9 @@
 interface UserDetailPageProps {
-  params: { id: number };
+  params: Promise<{ id: number }>;
 }
 
-const UserDetailPage = ({ params }: UserDetailPageProps) => {
-  const { id } = params;
+const UserDetailPage = async ({ params }: UserDetailPageProps) => {
+  const { id } = await params;
 
   return <div>UserDetailPage: {id}</div>;
 };

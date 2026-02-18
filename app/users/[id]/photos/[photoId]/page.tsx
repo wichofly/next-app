@@ -1,9 +1,9 @@
 interface PhotoPageProps {
-  params: { id: number; photoId: number };
+  params: Promise<{ id: number; photoId: number }>;
 }
 
-const PhotoPage = ({ params }: PhotoPageProps) => {
-  const { id, photoId } = params;
+const PhotoPage = async ({ params }: PhotoPageProps) => {
+  const { id, photoId } = await params;
 
   return (
     <div>PhotoPage: {id} - {photoId}</div>
