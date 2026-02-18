@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import UserTable from './UserTable';
 
 interface UserPageProps {
@@ -10,8 +11,10 @@ const UsersPage = async ({ searchParams }: UserPageProps) => {
   return (
     <>
       <h1>Users</h1>
-      <p>Time: {new Date().toLocaleTimeString()}</p>
-
+      <p className="mb-2">Time: {new Date().toLocaleTimeString()}</p>
+      <Link href="/users/new" className="btn btn-soft btn-secondary mb-2">
+        Add new user
+      </Link>
       <UserTable sortOrder={sortOrder} />
     </>
   );
