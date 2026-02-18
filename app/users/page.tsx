@@ -23,7 +23,7 @@ const UsersPage = async () => {
               <th>Email</th>
             </tr>
           </thead>
-          <tbody >
+          <tbody>
             {users.map((user) => (
               <tr key={user.id}>
                 <td>{user.name}</td>
