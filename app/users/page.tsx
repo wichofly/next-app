@@ -1,39 +1,25 @@
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
+import Link from 'next/link';
+import { Suspense } from 'react';
+import UserTable from './UserTable';
+
+interface UserPageProps {
+  searchParams: Promise<{ sortOrder?: string }>;
 }
 
-const UsersPage = async () => {
-  const res = await fetch(process.env.URL_USERS!, { cache: 'no-store' });
-  const users: User[] = await res.json();
+const UsersPage = async ({ searchParams }: UserPageProps) => {
+  const { sortOrder } = await searchParams;
 
   return (
     <>
       <h1>Users</h1>
-      <p>Time: {new Date().toLocaleTimeString()}</p>
+      <p className="mb-2">Time: {new Date().toLocaleTimeString()}</p>
+      <Link href="/users/new" className="btn btn-soft btn-secondary mb-2">
+        Add new user
+      </Link>
 
-      <div className="overflow-x-auto rounded-box border border-base-content/5 bg-base-100 mt-2">
-        <table className="table">
-          <thead className="bg-base-200">
-            <tr>
-              <th>Name</th>
-              <th>Username</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.username}</td>
-                <td>{user.email}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <UserTable sortOrder={sortOrder} />
+      </Suspense>
     </>
   );
 };
