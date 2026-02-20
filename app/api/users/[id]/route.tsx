@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-interface GetProps {
+interface Props {
   params: Promise<{ id: number }>;
 }
 
-export const GET = async (request: NextRequest, { params }: GetProps) => {
+export const GET = async (request: NextRequest, { params }: Props) => {
   const { id } = await params;
 
   // Fetch data from a db
@@ -16,4 +16,26 @@ export const GET = async (request: NextRequest, { params }: GetProps) => {
     return NextResponse.json({ message: 'User not found' }, { status: 404 });
 
   return NextResponse.json({ id: 1, name: 'Jesus' });
+};
+
+export const PUT = async (request: NextRequest, { params }: Props) => {
+  const body = await request.json();
+  const { id } = await params;
+
+  if (!body.name)
+    return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+
+  if (id > 10)
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+  return NextResponse.json({ id: 1, name: body.name });
+};
+
+export const DELETE = async (request: NextRequest, { params }: Props) => {
+  const { id } = await params;
+
+  if (id > 10)
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
+  return NextResponse.json({ message: 'User deleted' });
 };

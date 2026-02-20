@@ -18,18 +18,3 @@ export const POST = async (request: NextRequest) => {
   return NextResponse.json({ id: 1, name: body.name }, { status: 201 });
 };
 
-export const PUT = async (
-  request: NextRequest,
-  { params }: { params: { id: number } },
-) => {
-  const { id } = params;
-  const body = await request.json();
-
-  if (!body.name)
-    return NextResponse.json({ error: 'Name is required' }, { status: 400 });
-
-  if (id > 10)
-    return NextResponse.json({ error: 'User not found' }, { status: 404 });
-
-  return NextResponse.json({ id: 1, name: body.name });
-};
