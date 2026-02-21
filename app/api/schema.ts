@@ -5,3 +5,8 @@ export const userSchema = z.object({
   // username: z.string(),
   // email: z.string().email(),
 });
+
+export const productSchema = z.object({
+  name: z.string(),
+  price: z.number().positive(),
+});

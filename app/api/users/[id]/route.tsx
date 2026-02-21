@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { userSchema } from '../schema';
+import { userSchema } from '../../schema';
 
 interface Props {
   params: Promise<{ id: number }>;

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { userSchema } from './schema';
+import { userSchema } from '../schema';
 
 export const GET = () => {
   return NextResponse.json([
@@ -20,4 +20,3 @@ export const POST = async (request: NextRequest) => {
   // Save the data to a db
   return NextResponse.json({ id: 1, name: body.name }, { status: 201 });
 };
-
