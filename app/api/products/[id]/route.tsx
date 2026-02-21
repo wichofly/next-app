@@ -1,18 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { request } from 'node:http';
 import { productSchema } from '../../schema';
+import { prisma } from '@/prisma/client';
 
 interface ProductsAPIProps {
-  params: Promise<{ id: number }>;
+  params: Promise<{ id: string }>;
 }
 
 export const GET = async (request: Request, { params }: ProductsAPIProps) => {
   const { id } = await params;
 
-  if (id > 10)
+  const product = await prisma.product.findUnique({
+    where: { id: parseInt(id) },
+  });
+
+  if (!product)
     return NextResponse.json({ error: 'Product not found' }, { status: 404 });
 
-  return NextResponse.json({ id, name: 'Milk', price: 2.5 });
+  return NextResponse.json(product);
 };
 
 export const PUT = async (
@@ -27,10 +32,18 @@ export const PUT = async (
   if (!validation.success)
     return NextResponse.json(validation.error.issues, { status: 400 });
 
-  if (id > 10)
+  const updatedProduct = await prisma.product.update({
+    where: { id: parseInt(id) },
+    data: {
+      name: body.name,
+      price: body.price,
+    },
+  });
+
+  if (!updatedProduct)
     return NextResponse.json({ error: 'Product not found' }, { status: 404 });
 
-  return NextResponse.json({ id, name: body.name, price: body.price });
+  return NextResponse.json(updatedProduct);
 };
 
 export const DELETE = async (
@@ -39,7 +52,11 @@ export const DELETE = async (
 ) => {
   const { id } = await params;
 
-  if (id > 10)
+  const deletedProduct = await prisma.product.delete({
+    where: { id: parseInt(id) },
+  });
+
+  if (!deletedProduct)
     return NextResponse.json({ error: 'Product not found' }, { status: 404 });
 
   return NextResponse.json({ message: 'Product deleted' });
