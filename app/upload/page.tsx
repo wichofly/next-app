@@ -43,3 +43,9 @@ const UploadPage = () => {
 };
 
 export default UploadPage;
+
+/**
+ * Pages used: 
+ * - https://console.cloudinary.com
+ * - https://next.cloudinary.dev/clduploadwidget/basic-usage
+ */
