@@ -1,0 +1,27 @@
+// lib/prisma.ts
+import { PrismaClient } from "@/app/generated/prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
+
+const connectionString = process.env.DIRECT_DATABASE_URL;
+
+if (!connectionString) {
+	throw new Error("DIRECT_DATABASE_URL is not set.");
+}
+
+const globalForPrisma = globalThis as unknown as {
+	prisma?: PrismaClient;
+	prismaPool?: Pool;
+};
+
+const pool = globalForPrisma.prismaPool ?? new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
+
+export const prisma =
+	globalForPrisma.prisma ??
+	new PrismaClient({ adapter });
+
+if (process.env.NODE_ENV !== "production") {
+	globalForPrisma.prisma = prisma;
+	globalForPrisma.prismaPool = pool;
+}
