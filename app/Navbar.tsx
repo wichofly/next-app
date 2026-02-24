@@ -15,14 +15,17 @@ const Navbar = () => {
       <Link href="/users" className="mr-5">
         Users
       </Link>
-      
+
       {status === 'authenticated' ? (
-        <Link
-          href="/api/auth/signout"
-          className="hover:text-pink-600 transition-colors font-semibold"
-        >
-          {session.user!.name}
-        </Link>
+        <div className='flex'>
+          <p className="font-semibold">{session.user!.name}</p>
+          <Link
+            href="/api/auth/signout"
+            className="hover:text-pink-600 transition-colors ml-3"
+          >
+            Sign Out
+          </Link>
+        </div>
       ) : (
         <Link
           href="/api/auth/signin"
