@@ -10,3 +10,8 @@ export const productSchema = z.object({
   name: z.string(),
   price: z.number().positive(),
 });
+
+export const createUserSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(5, 'Password must be at least 5 characters long'),
+})
