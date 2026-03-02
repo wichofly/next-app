@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import GitHubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { prisma } from '@/prisma/client';
@@ -29,7 +30,7 @@ export const authOptions: NextAuthOptions = {
 
         const passwordMatch = await bcrypt.compare(
           credentials.password,
-          user.hashedPassword!
+          user.hashedPassword!,
         );
 
         return passwordMatch ? user : null;
@@ -39,6 +40,16 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+
+    GitHubProvider({
+      clientId: process.env.GITHUB_CLIENT_ID!,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET!,
+      style: {
+        logo: 'https://authjs.dev/img/providers/github.svg',
+        bg: '#fff',
+        text: '#000',
+      },
     }),
   ],
   session: {
