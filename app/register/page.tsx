@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, SubmitEvent } from 'react';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
 
 type RegisterFormState = {
@@ -14,17 +15,24 @@ type RegisterResponse = {
 };
 
 const RegisterPage = () => {
-  const [formData, setFormData] = useState<RegisterFormState>({
-    name: '',
-    email: '',
-    password: '',
-  });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string>('');
 
-  const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<RegisterFormState>({
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit: SubmitHandler<RegisterFormState> = async (data) => {
     setError('');
     setSuccessMessage('');
     setIsLoading(true);
@@ -35,7 +43,7 @@ const RegisterPage = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
 
       const result: RegisterResponse = await response.json();
@@ -46,7 +54,7 @@ const RegisterPage = () => {
       }
 
       setSuccessMessage('Account created successfully. You can now log in.');
-      setFormData({ name: '', email: '', password: '' });
+      reset();
     } catch {
       setError('Unexpected error occurred while registering.');
     } finally {
@@ -61,22 +69,20 @@ const RegisterPage = () => {
         Register with your name, email, and password.
       </p>
 
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
         <label className="form-control w-full">
           <span className="label-text mb-1">Name</span>
           <input
             type="text"
             className="input input-bordered w-full"
-            value={formData.name}
-            onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                name: event.target.value,
-              }))
-            }
             placeholder="John Doe"
-            required
+            {...register('name', {
+              required: 'Name is required',
+            })}
           />
+          {errors.name && (
+            <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>
+          )}
         </label>
 
         <label className="form-control w-full">
@@ -84,16 +90,18 @@ const RegisterPage = () => {
           <input
             type="email"
             className="input input-bordered w-full"
-            value={formData.email}
-            onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                email: event.target.value,
-              }))
-            }
             placeholder="john@example.com"
-            required
+            {...register('email', {
+              required: 'Email is required',
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: 'Enter a valid email',
+              },
+            })}
           />
+          {errors.email && (
+            <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>
+          )}
         </label>
 
         <label className="form-control w-full">
@@ -101,17 +109,20 @@ const RegisterPage = () => {
           <input
             type="password"
             className="input input-bordered w-full"
-            value={formData.password}
-            onChange={(event) =>
-              setFormData((current) => ({
-                ...current,
-                password: event.target.value,
-              }))
-            }
             placeholder="Minimum 5 characters"
-            minLength={5}
-            required
+            {...register('password', {
+              required: 'Password is required',
+              minLength: {
+                value: 5,
+                message: 'Password must be at least 5 characters',
+              },
+            })}
           />
+          {errors.password && (
+            <p className="text-sm text-red-600 mt-1">
+              {errors.password.message}
+            </p>
+          )}
         </label>
 
         {error && <p className="text-sm text-red-600">{error}</p>}
