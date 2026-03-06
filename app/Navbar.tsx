@@ -15,6 +15,9 @@ const Navbar = () => {
       <Link href="/users" className="mr-5">
         Users
       </Link>
+      <Link href="/register" className="mr-5">
+        Register
+      </Link>
 
       {status === 'authenticated' ? (
         <div className='flex'>
