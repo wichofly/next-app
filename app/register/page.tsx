@@ -69,61 +69,72 @@ const RegisterPage = () => {
         Register with your name, email, and password.
       </p>
 
-      <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-        <label className="form-control w-full">
-          <span className="label-text mb-1">Name</span>
-          <input
-            type="text"
-            className="input input-bordered w-full"
-            placeholder="John Doe"
-            {...register('name', {
-              required: 'Name is required',
-            })}
-          />
-          {errors.name && (
-            <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>
-          )}
-        </label>
+      <form
+        className="space-y-4 border border-gray-300 p-4 rounded-lg"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="mb-4">
+          <label className="form-control w-full">
+            <span className="label-text mb-2">Name</span>
+            <input
+              type="text"
+              className="input input-bordered w-full"
+              placeholder="John Doe"
+              {...register('name', {
+                required: 'Name is required',
+              })}
+            />
+            {errors.name && (
+              <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>
+            )}
+          </label>
+        </div>
 
-        <label className="form-control w-full">
-          <span className="label-text mb-1">Email</span>
-          <input
-            type="email"
-            className="input input-bordered w-full"
-            placeholder="john@example.com"
-            {...register('email', {
-              required: 'Email is required',
-              pattern: {
-                value: /^\S+@\S+$/i,
-                message: 'Enter a valid email',
-              },
-            })}
-          />
-          {errors.email && (
-            <p className="text-sm text-red-600 mt-1">{errors.email.message}</p>
-          )}
-        </label>
+        <div className="mb-4">
+          <label className="form-control w-full">
+            <span className="label-text mb-2">Email</span>
+            <input
+              type="email"
+              className="input input-bordered w-full"
+              placeholder="john@example.com"
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^\S+@\S+$/i,
+                  message: 'Enter a valid email',
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="text-sm text-red-600 mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </label>
+        </div>
 
-        <label className="form-control w-full">
-          <span className="label-text mb-1">Password</span>
-          <input
-            type="password"
-            className="input input-bordered w-full"
-            placeholder="Minimum 5 characters"
-            {...register('password', {
-              required: 'Password is required',
-              minLength: {
-                value: 5,
-                message: 'Password must be at least 5 characters',
-              },
-            })}
-          />
-          {errors.password && (
-            <p className="text-sm text-red-600 mt-1">
-              {errors.password.message}
-            </p>
-          )}
-        </label>
+        <div className="mb-4">
+          <label className="form-control w-full">
+            <span className="label-text mb-1">Password</span>
+            <input
+              type="password"
+              className="input input-bordered w-full"
+              placeholder="Minimum 5 characters"
+              {...register('password', {
+                required: 'Password is required',
+                minLength: {
+                  value: 5,
+                  message: 'Password must be at least 5 characters',
+                },
+              })}
+            />
+            {errors.password && (
+              <p className="text-sm text-red-600 mt-1">
+                {errors.password.message}
+              </p>
+            )}
+          </label>
+        </div>
 
         {error && <p className="text-sm text-red-600">{error}</p>}
         {successMessage && (
