@@ -20,7 +20,13 @@ const Navbar = () => {
       </Link>
 
       {status === 'authenticated' ? (
-        <div className='flex'>
+        <div className="flex">
+          <Link
+            href="/change-password"
+            className="mr-3 hover:text-blue-600 transition-colors"
+          >
+            Change Password
+          </Link>
           <p className="font-semibold">{session.user!.name}</p>
           <Link
             href="/api/auth/signout"

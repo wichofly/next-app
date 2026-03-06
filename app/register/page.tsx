@@ -3,12 +3,7 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Link from 'next/link';
-
-type RegisterFormState = {
-  name: string;
-  email: string;
-  password: string;
-};
+import { UserRegistrationForm } from '../api/schema';
 
 type RegisterResponse = {
   error?: string;
@@ -24,7 +19,7 @@ const RegisterPage = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<RegisterFormState>({
+  } = useForm<UserRegistrationForm>({
     defaultValues: {
       name: '',
       email: '',
@@ -32,7 +27,7 @@ const RegisterPage = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<RegisterFormState> = async (data) => {
+  const onSubmit: SubmitHandler<UserRegistrationForm> = async (data) => {
     setError('');
     setSuccessMessage('');
     setIsLoading(true);
